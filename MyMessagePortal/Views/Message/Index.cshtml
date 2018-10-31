@@ -1,0 +1,59 @@
+﻿@model IEnumerable<MyMessagePortal.ViewModels.MessageViewModel>
+
+<h2>Ostatnie @TempData["NumMessagesDisplayed"] wiadomości</h2>
+
+<p>
+    <a asp-action="Add" asp-controller="Message" asp-route-returnUrl="@Url.Action("Index", "Message")" class="btn btn-success"><i class="fa fa-plus fa-lg" aria-hidden="true"></i> Nowa widomość</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateAdded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Channel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>
+                Czynności
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    @item.DateAdded.ToString("yyyy-MM-dd HH:mm:ss")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Channel.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy.UserName)
+                </td>
+                <td>
+                    @if (item.CreatedBy.UserName == User.Identity.Name && Math.Abs((DateTime.Now - item.DateAdded).TotalMinutes) <= 10)
+                    {
+                        <a title="Usunięcie" asp-action="Remove" asp-controller="Message" asp-route-id="@item.Id" asp-route-returnUrl="@Url.Action("Index", "Message")"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
+                    }
+                    else
+                    {
+                        <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
+                    }
+                    
+                    @Url.
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

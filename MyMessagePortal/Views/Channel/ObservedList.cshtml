@@ -1,0 +1,52 @@
+﻿@model MyMessagePortal.ViewModels.ObservedChannelsViewModel
+
+<h2>Obserwowane kanały</h2>
+
+<div>
+    <ul class="pagination pagination-sm">
+        <li class="page-item @(Model.CurrentPage <= 1 ? "disabled" : "")">
+            <a asp-action="ObservedList" asp-controller="Channel" asp-route-page="@(Model.CurrentPage - 1)" class="page-link">&laquo;</a>
+        </li>
+        @for (int i = 1; i <= Model.NumberOfPages; i++)
+        {
+            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                <a asp-action="ObservedList" asp-controller="Channel" asp-route-page="@i" class="page-link">@i</a>
+            </li>
+        }
+        <li class="page-item @(Model.CurrentPage >= Model.NumberOfPages ? "disabled" : "")">
+            <a asp-action="ObservedList" asp-controller="Channel" asp-route-page="@(Model.CurrentPage + 1)" class="page-link">&raquo;</a>
+        </li>
+    </ul>
+    <div class="row">
+        @foreach (var item in Model.ObservedChannels)
+        {
+            <div class="col">
+                <div class="card mb-3">
+                    <h4 class="card-header" style="background-color: #@item.Channel.ChannelColor">
+                        @item.Channel.Name
+                        <a title="Dodaj wiadomość" asp-action="Add" asp-controller="Message" asp-route-channelId="@item.Channel.Id" asp-route-returnUrl="@Url.Action("ObservedList", "Channel", new {page = Model.CurrentPage})" class="card-link float-right"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></a>
+                    </h4>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var message in item.Channel.Messages)
+                        {
+                            <li class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <small class="text-muted">@message.CreatedBy.UserName w dniu @message.DateAdded.ToString("yyyy-MM-dd HH:mm:ss") napisał/a:</small>
+                                    @if (message.CreatedBy.UserName == User.Identity.Name && Math.Abs((DateTime.Now - message.DateAdded).TotalMinutes) <= 10)
+                                    {
+                                        <a title="Usunięcie" asp-action="Remove" asp-controller="Message" asp-route-id="@message.Id" asp-route-returnUrl="@Url.Action("ObservedList", "Channel", new {page = Model.CurrentPage})"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    }
+                                </div>
+                                @message.Text
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</div>

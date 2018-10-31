@@ -1,0 +1,35 @@
+﻿@model MyMessagePortal.Models.ChannelModel
+
+<h2>Usuwanie kanału</h2>
+
+<h3>Czy na pewno chcesz usunąć poniższy kanał?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateAdded)
+        </dt>
+        <dd>
+            @Model.DateAdded.ToString("yyyy-MM-dd")
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ChannelColor)
+        </dt>
+        <dd>
+            <div style="display: inline-block; width: 10px; height: 10px; border: 1px solid; background-color: #@Model.ChannelColor"></div>
+            #@Html.DisplayFor(model => model.ChannelColor)
+        </dd>
+    </dl>
+    
+    <form asp-action="RemoveConfirm" asp-controller="Channel" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Usuń" class="btn btn-warning" /> |
+        <a asp-action="Index" asp-controller="Channel" class="btn btn-default">Anuluj</a>
+    </form>
+</div>

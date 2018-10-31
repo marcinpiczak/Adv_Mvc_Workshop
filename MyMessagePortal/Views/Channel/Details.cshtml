@@ -1,0 +1,52 @@
+﻿@model MyMessagePortal.ViewModels.ChannelViewModel
+
+<h2>Widomości dla kanału: @Model.Name</h2>
+
+<p>
+    <a asp-action="Add" asp-controller="Message" asp-route-channelId="@Model.Id" class="btn btn-success"><i class="fa fa-plus fa-lg" aria-hidden="true"></i></span> Nowa widomość</a>
+</p>
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Treść
+            </th>
+            <th>
+                Data dodania
+            </th>
+            <th>
+                Napisał
+            </th>
+            <th>
+                Czynności
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Messages)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    @item.DateAdded.ToString("yyyy-MM-dd HH:mm:ss")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy.UserName)
+                </td>
+                <td>
+                    @if (item.CreatedBy.UserName == User.Identity.Name && Math.Abs((DateTime.Now - item.DateAdded).Minutes) <= 10)
+                    {
+                        <a title="Usunięcie" asp-action="Remove" asp-controller="Message" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                    }
+                    else
+                    {
+                        <span class="glyphicon glyphicon-trash"></span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

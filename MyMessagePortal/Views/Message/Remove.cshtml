@@ -1,0 +1,42 @@
+﻿@model MyMessagePortal.ViewModels.MessageViewModel
+
+<h2>Usuwanie wiadomości z kanału @Model.Channel.Name</h2>
+
+<h3>Czy na pewno chcesz usunąć poniższą wiadomość?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Text)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateAdded)
+        </dt>
+        <dd>
+            @Model.DateAdded.ToString("yyyy-MM-dd HH:mm:ss")
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Channel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Channel.Name)
+        </dd>
+    </dl>
+    
+    <form asp-action="RemoveConfirm" asp-controller="Message" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+        <input type="submit" value="Usuń" class="btn btn-warning" /> |
+        @if (ViewBag.ReturnUrl == null)
+        {
+            <a asp-action="Index" asp-controller="Message" class="btn btn-default">Anuluj</a>
+        }
+        else
+        {
+            <a href="@ViewBag.ReturnUrl" class="btn btn-default">Anuluj</a>
+        }
+    </form>
+</div>

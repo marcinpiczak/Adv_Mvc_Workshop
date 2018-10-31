@@ -1,0 +1,84 @@
+﻿@model IEnumerable<MyMessagePortal.Models.ChannelModel>
+
+<h2>Lista dostępnych kanałów</h2>
+
+<p>
+    <a asp-action="Add" asp-controller="Channel" class="btn btn-success"><i class="fa fa-plus fa-lg" aria-hidden="true"></i> Nowy kanał</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateAdded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDefault)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChannelColor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>
+                Czynności
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @item.DateAdded.ToString("yyyy-MM-dd HH:mm:ss")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsDefault)
+                </td>
+                <td>
+                    <div style="display: inline-block; width: 10px; height: 10px; border: 1px solid; background-color: #@item.ChannelColor"></div>
+                    #@Html.DisplayFor(modelItem => item.ChannelColor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy.UserName)
+                </td>
+                <td>
+                    @if (item.CreatedBy.UserName == User.Identity.Name && !item.IsDefault)
+                    {
+                        <a title="Usunięcie" asp-action="Remove" asp-controller="Channel" asp-route-id="@item.Id"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
+                    }
+                    else
+                    {
+                        <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
+                    }
+
+                    @if (@item.ObservedChannels.Any(x => x.ChannelId == item.Id && x.User.UserName == User.Identity.Name))
+                    {
+                        if (item.IsDefault && item.CreatedBy.UserName == User.Identity.Name)
+                        {
+                            <span class="glyphicon glyphicon-eye-close"></span>
+                        }
+                        else
+                        {
+                            <a title="Przestań obserwować" asp-action="StopObserving" asp-controller="Channel" asp-route-id="@item.Id"><i class="fa fa-eye-slash fa-lg" aria-hidden="true"></i></a>
+                        }
+                    }
+                    else
+                    {
+                        <a title="Obserwuj" asp-action="Observe" asp-controller="Channel" asp-route-id="@item.Id"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></a>
+                    }
+
+                    <a title="Lista wiadomość" asp-action="Details" asp-controller="Channel" asp-route-channelId="@item.Id"><i class="fa fa-comments-o fa-lg" aria-hidden="true"></i></a>
+                    <a title="Dodaj wiadomość" asp-action="Add" asp-controller="Message" asp-route-channelId="@item.Id" asp-route-returnUrl="@Url.Action("Index", "Channel")"><i class="fa fa-paper-plane-o fa-lg" aria-hidden="true"></i></a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
