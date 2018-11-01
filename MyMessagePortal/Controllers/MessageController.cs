@@ -5,10 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using MyMessagePortal.EntityConfig;
-using MyMessagePortal.Helpers;
 using MyMessagePortal.Models;
 using MyMessagePortal.ViewModels;
 
@@ -144,7 +142,7 @@ namespace MyMessagePortal.Controllers
         [HttpGet]
         public async Task<IActionResult> Remove(int id, string returnUrl = "/Message/Index")
         {
-            returnUrl = await GetValidUrl(returnUrl, "GET");
+            returnUrl = GetValidUrl(returnUrl, "GET");
             ViewBag.ReturnUrl = returnUrl;
 
             if (id <= 0)
@@ -200,7 +198,7 @@ namespace MyMessagePortal.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveConfirm(int id, string returnUrl = "/Message/Index")
         {
-            returnUrl = await GetValidUrl(returnUrl, "POST");
+            returnUrl = GetValidUrl(returnUrl, "POST");
             ViewBag.ReturnUrl = returnUrl;
 
             try
@@ -256,7 +254,7 @@ namespace MyMessagePortal.Controllers
             }
         }
 
-        private async Task<bool> ValidateUrl(string path, string method)
+        private bool ValidateUrl(string path, string method)
         {
             //IRouteCollection router = RouteData.Routers.OfType<IRouteCollection>().First();
 
@@ -273,9 +271,9 @@ namespace MyMessagePortal.Controllers
             return true;
         }
 
-        private async Task<string> GetValidUrl(string path, string method)
+        private string GetValidUrl(string path, string method)
         {
-            var isValid = await ValidateUrl(path, method);
+            var isValid = ValidateUrl(path, method);
             return isValid ? path : "/Message/Index";
         }
     }
