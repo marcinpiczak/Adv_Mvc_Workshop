@@ -33,7 +33,7 @@ namespace MyMessagePortal.Controllers
             TempData["NumMessagesDisplayed"] = itemsPerPage;
 
             var orderedMessages = _context.Messages.Include(x => x.Channel).Include(x => x.CreatedBy)
-                .OrderBy(x => x.DateAdded).Select(x => new MessageViewModel()
+                .OrderByDescending(x => x.DateAdded).Select(x => new MessageViewModel()
                 {
                     Id = x.Id,
                     Text = x.Text,
@@ -83,10 +83,9 @@ namespace MyMessagePortal.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(MessageViewModel model)
         {
-            //returnUrl = await GetValidUrl(returnUrl, "POST");
+            //returnUrl = GetValidUrl(returnUrl, "POST");
             //ViewBag.ReturnUrl = returnUrl;
             var returnUrl = Request.Form["returnUrl"].ToString();
-            var query = Request.Query;
 
             if (ModelState.IsValid)
             {
