@@ -2,7 +2,13 @@
 
 *Read this in other languages: [Polish](README.pl-PL.md)
 
-MyMessagePortal is simple application that allows all logged users to create channels and post messages on them.
+MyMessagePortal is application that allows all logged users to create channels and post messages on them.
+
+### Technologies
+ASP.NET Core 2.1 MVC, C#, JQuery, CSS, MS SQL Server
+
+### Libraries/Frameworks
+System.Data.SqlClient, Bootstrap
 
 ## Installation:
 

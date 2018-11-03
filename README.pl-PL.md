@@ -1,6 +1,12 @@
 # MyMessagePortal
 
-MyMessagePortal jest prostą aplikacją pozwalającą na publikowanie wiadomości na jednym z dostępnych kanałów.
+MyMessagePortal jest aplikacją pozwalającą na publikowanie wiadomości na jednym z dostępnych kanałów.
+
+### Technologie
+ASP.NET Core 2.1 MVC, C#, JQuery, CSS, MS SQL Server
+
+### Biblioteki/Frameworks
+System.Data.SqlClient, Bootstrap
 
 ## Instalacja:
 
